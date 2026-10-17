@@ -1,5 +1,8 @@
 ## 1.0.10
 
+- fix: update Windows runtime to mpv 0.41.0, FFmpeg 9.0.2 and OpenSSL 3.5.9
+- build: verify runtime archives with SHA-256
+- fix: refresh extracted Windows runtimes after upgrading
 - feat: support ARM64
 - fix: TrueHD support
 

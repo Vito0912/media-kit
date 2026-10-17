@@ -14,15 +14,15 @@ set(PROJECT_NAME "media_kit_libs_windows_audio")
 project(${PROJECT_NAME} LANGUAGES CXX)
 
 # ------------------------------------------------------------------------------
-function(download_and_verify url md5 locationForArchive)
+function(download_and_verify url sha256 locationForArchive)
   # Check if the archive exists.
   if(EXISTS "${locationForArchive}")
-    file(MD5 "${locationForArchive}" ARCHIVE_MD5)
+    file(SHA256 "${locationForArchive}" ARCHIVE_SHA256)
 
-    # If MD5 doesn't match, delete the archive to download again.
-    if(NOT md5 STREQUAL ARCHIVE_MD5)
+    # If SHA256 doesn't match, delete the archive to download again.
+    if(NOT sha256 STREQUAL ARCHIVE_SHA256)
       file(REMOVE "${locationForArchive}")
-      message(STATUS "MD5 mismatch. File deleted.")
+      message(STATUS "SHA256 mismatch. File deleted.")
     endif()
   endif()
 
@@ -32,10 +32,10 @@ function(download_and_verify url md5 locationForArchive)
     file(DOWNLOAD "${url}" "${locationForArchive}")
     message(STATUS "Downloaded archive to ${locationForArchive}.")
 
-    # Verify MD5 of the newly downloaded file.
-    file(MD5 "${locationForArchive}" ARCHIVE_MD5)
+    # Verify SHA256 of the newly downloaded file.
+    file(SHA256 "${locationForArchive}" ARCHIVE_SHA256)
 
-    if(md5 STREQUAL ARCHIVE_MD5)
+    if(sha256 STREQUAL ARCHIVE_SHA256)
       message(STATUS "${locationForArchive} Verification successful.")
     else()
       message(FATAL_ERROR "${locationForArchive} Integrity check failed, please try to re-build project again.")
@@ -66,24 +66,24 @@ endfunction()
 # Detect architecture and set appropriate libmpv archive
 if(${FLUTTER_TARGET_PLATFORM} STREQUAL "windows-x64")
   set(LIBMPV_ARCH "x86_64")
-  set(LIBMPV "mpv-dev-x86_64-20251213-git-140ec21.7z")
-  set(LIBMPV_MD5 "bf77216724f0f290dd14d2b1bc9826df")
+  set(LIBMPV "mpv-dev-x86_64-20261017-git-41f6a64.7z")
+  set(LIBMPV_SHA256 "e2f7428d0afe9c8b8b520966029313fbe50ce64fb819ad271c4c72ca6de6a4e3")
 else()
   set(LIBMPV_ARCH "aarch64")
-  set(LIBMPV "mpv-dev-aarch64-20251213-git-140ec21.7z")
-  set(LIBMPV_MD5 "fc3c09cd5bed08db58f888460da9059f")
+  set(LIBMPV "mpv-dev-aarch64-20261017-git-41f6a64.7z")
+  set(LIBMPV_SHA256 "03aaaf582ea4cf2ea97ff86dc77aaf0bab95e7fb567f63dc1f2a13e767e60f52")
 endif()
 
 # Download URL for the libmpv archive from the latest release
-set(LIBMPV_URL "https://github.com/media-kit/libmpv-win32-audio-cmake/releases/download/20251213/${LIBMPV}")
+set(LIBMPV_URL "https://github.com/Vito0912/libmpv-win32-audio-cmake/releases/download/20261017/${LIBMPV}")
 
 # Download location of the libmpv archive.
 set(LIBMPV_ARCHIVE "${CMAKE_BINARY_DIR}/${LIBMPV}")
-set(LIBMPV_SRC "${CMAKE_BINARY_DIR}/libmpv")
+set(LIBMPV_SRC "${CMAKE_BINARY_DIR}/libmpv-20261017-${LIBMPV_ARCH}")
 
 download_and_verify(
   ${LIBMPV_URL}
-  ${LIBMPV_MD5}
+  ${LIBMPV_SHA256}
   ${LIBMPV_ARCHIVE}
 )
 
