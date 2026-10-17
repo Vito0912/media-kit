@@ -1,5 +1,6 @@
 ## 1.0.10
 
+- fix: guard newer CMake policy for compatibility with older versions
 - fix: update Windows runtime to mpv 0.41.0, FFmpeg 9.0.2 and OpenSSL 3.5.9
 - build: verify runtime archives with SHA-256
 - fix: refresh extracted Windows runtimes after upgrading
